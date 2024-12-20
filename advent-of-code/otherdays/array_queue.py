@@ -1,4 +1,4 @@
-import arrays
+import otherdays.arrays as arrays
 
 class Queue:
     __slots__ = ['__size', '__front', '__back', '__array']

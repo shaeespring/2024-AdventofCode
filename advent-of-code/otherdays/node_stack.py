@@ -3,7 +3,7 @@ Provides a node-based implementation of a stack data structure.
 
 #author GCCIS Faculty
 """
-import node
+import otherdays.node as node
 
 class Stack:
     slots = ["__top", "__size"]
