@@ -26,11 +26,11 @@ def line_check(line,rules,longest,i=0):
     if line[i] in rules:
         line_check(line, rules, i+1)
     while longest != 0:
-
+        longest-=1
         if line[i:longest] in rules:
 
-            line_check(line,rules,longest,i+longest)
-        longest-1
+            line_check(line,rules,longest-1,i+longest)
+        
     
             
 
