@@ -1,6 +1,6 @@
 def arrayer(location=None):
     lines = []
-    with open("day6.txt") as file:
+    with open("inputfile.txt") as file:
 
         for line in file:
             line = line.strip()
@@ -86,7 +86,7 @@ def set_builder():
             try_guard_pos = (pos_guard[0] + 1, pos_guard[1])
         elif dir == "<":
             try_guard_pos = (pos_guard[0], pos_guard[1] - 1)
-        elif dir == ">":
+        else:
             try_guard_pos = (pos_guard[0], pos_guard[1] + 1)
 
         if check(try_guard_pos, pos_items):
@@ -122,7 +122,7 @@ def test_location(location, pos_guard):
             try_guard_pos = (pos_guard[0] + 1, pos_guard[1])
         elif dir == "<":
             try_guard_pos = (pos_guard[0], pos_guard[1] - 1)
-        elif dir == ">":
+        else:
             try_guard_pos = (pos_guard[0], pos_guard[1] + 1)
 
         if check(try_guard_pos, pos_items):

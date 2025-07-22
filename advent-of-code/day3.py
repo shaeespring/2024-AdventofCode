@@ -37,7 +37,7 @@ def multiplier(mullist):
 
 
 def main():
-    mullist = counter("day3.txt")  
+    mullist = counter("inputfile.txt")  
     print(mullist)
     
     mult_sum = multiplier(mullist)  

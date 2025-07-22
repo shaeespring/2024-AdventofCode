@@ -37,7 +37,7 @@ def create_lists(filename):
 
 
 def main():
-    list1, list2 = create_lists("input.txt")
+    list1, list2 = create_lists("inputfile.txt")
     #print(lister(list1, list2))
     print(similar(list1,list2))
 

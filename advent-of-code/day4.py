@@ -6,7 +6,7 @@ S = "S"
 
 def arrayer():
     lines = []
-    with open("day4.txt") as file:
+    with open("inputfile.txt") as file:
 
         for line in file:
             line = line.strip()

@@ -49,4 +49,4 @@ def doub_checker(line):
             break  # no valid sequence if the difference is not between 1 and 3
 
     return valid
-checker("day2.txt")
+checker("inputfile.txt")

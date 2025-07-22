@@ -1,6 +1,6 @@
 def day5():
     totalsum = 0
-    with open("day5.txt") as file:
+    with open("inputfile.txt") as file:
         rules = []
         for line in file:
             line = line.strip()

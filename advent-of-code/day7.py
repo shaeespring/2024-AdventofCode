@@ -1,4 +1,3 @@
-import otherdays.node_stack as node_stack
 import operator
 
 allowed_operators = {
