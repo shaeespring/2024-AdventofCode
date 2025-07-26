@@ -21,8 +21,6 @@ def day7():
                 totalsum += value
                 # eventually this will add the test values
 
-            else:
-                ...
         print(totalsum)
 
 
