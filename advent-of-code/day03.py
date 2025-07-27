@@ -1,47 +1,46 @@
 import re
+import math
 
-def counter(filename):
+
+def pt1_list(filename):
+    with open(filename) as file:
+        content = file.read()
+        pattern = r"mul\(\d+,\d+\)"
+        return re.findall(pattern, content)
+
+
+def pt2_list(filename):
     mullist = []  # to store mul() matches
-    in_dont_block = False  # if inside a don't() block
+    do_block = True  # if inside a don't() block
 
     # pattern for mul({number, number})
     pattern = r"mul\(\d+,\d+\)"
 
     with open(filename) as file:
-        for line in file:
-            # split the string into parts 
-            parts = re.split(r"(don't\(\)|do\(\))", line)
+        content =file.read()
+        # split the string into parts
+        parts = re.split(r"(don't\(\)|do\(\))", content)
 
-            for part in parts:
-                if "don't()" in part:
-                    
-                    in_dont_block = True
-                elif "do()" in part:
-                    in_dont_block = False
-                elif not in_dont_block:
-                    # collect mul() values only when not inside a don't() block
-                    mullist.extend(re.findall(pattern, part))
+        for part in parts:
+            if "don't()" in part:
+                do_block=False
+            elif "do()" in part:
+                do_block=True
+            elif do_block: #neither don't nor do are present, so it's mul
+                # collect mul() values only when not inside a don't() block
+                mullist.extend(re.findall(pattern, part))
 
         return mullist
 
-
-def multiplier(mullist):
-    mult_sum = 0
-    for item in mullist:
-        item = item[4:-1]  # removes 'mul(' from start and ')' from end
-        item1, item2 = map(int, item.split(','))  
-        print(item1, item2)  # print the pair of numbers
-        mult_sum += item1 * item2  
-
-    return mult_sum
-
-
 def main():
-    mullist = counter("inputfile.txt")  
-    print(mullist)
-    
-    mult_sum = multiplier(mullist)  
-    print(mult_sum)
+
+    pt1_mullist = pt1_list("advent-of-code/data/day3.txt")
+    pt2_mullist = pt2_list("advent-of-code/data/day3.txt")
+
+    pt1 = sum(math.prod(map(int, item[4:-1].split(","))) for item in pt1_mullist)
+    pt2 = sum(math.prod(map(int, item[4:-1].split(","))) for item in pt2_mullist)
+    print(pt1)
+    print(pt2)
 
 
 main()
