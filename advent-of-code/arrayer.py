@@ -1,18 +1,14 @@
-def arrayer(filename):
-    lines = []
+def arrayer(filename,delimiter=" "):
     with open(filename) as file:
-
-        for line in file:
-            line = line.strip()
-            lines.append(line)
-
         array = []
-
-        for line in lines:
-            # iterate over the characters in the line
+        for line in file:
+            if delimiter == "":
+                line = line.strip()
+                list(line)
+            else:
+                line = line.strip().split(delimiter)
             inner = []
-            for char in line:
-                inner.append(char)
+            for c in line:
+                inner.append(c)
             array.append(inner)
-
-        return array
+    return array

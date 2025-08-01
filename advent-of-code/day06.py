@@ -1,50 +1,26 @@
-def arrayer(location=None):
-    lines = []
-    with open("inputfile.txt") as file:
-
-        for line in file:
-            line = line.strip()
-            lines.append(line)
-
-        array = []
-
-        for line in lines:
-            # iterate over the characters in the line
-            inner = []
-            for char in line:
-                inner.append(char)
-            array.append(inner)
-        if location != None:
-            array[location[0]][location[1]] = "#"
-        return array
+from arrayer import arrayer
 
 
-def find_guard(array):
-    for y in range(len(array)):
-        for x in range(len(array[0])):
-
-            if array[x][y] == "^":
-                return (x, y)
-
-
-def find_items(array):
+def find_guard_items(array):
+    guard_pos = ()
     items = []
-    for y in range(len(array)):
-        for x in range(len(array[0])):
-
+    for x in range(len(array)):
+        for y in range(len(array[0])):
+            if array[x][y] == "^":
+                guard_pos = (x, y)
             if array[x][y] == "#":
                 items.append((x, y))
-    return items
+    return guard_pos, items
 
 
-def turn(dir):
-    if dir == "^":
+def turn(direction):
+    if direction == "^":
         return ">"
-    if dir == ">":
+    if direction == ">":
         return "v"
-    if dir == "v":
+    if direction == "v":
         return "<"
-    if dir == "<":
+    if direction == "<":
         return "^"
 
 
@@ -52,13 +28,13 @@ def check(guard_pos, items):
     for item in items:
         if guard_pos == item:
             return True
+
     return False
 
 
 def check_edges(guard_pos, array):
     if guard_pos[0] == len(array):
         return True
-
     if guard_pos[0] == -1:
         return True
     if guard_pos[1] == len(array[0]):
@@ -69,82 +45,76 @@ def check_edges(guard_pos, array):
         return False
 
 
-def set_builder():
+def pt1_build(grid, original, items):
     s = set()
-    array = arrayer()
-    pos_guard = find_guard(array)
-    original = pos_guard
-    pos_items = find_items(array)
-    dir = array[pos_guard[0]][pos_guard[1]]
+    guard_pos = original
+    direction = grid[original[0]][original[1]]
 
     while True:
-        if pos_guard != original:
-            s.add(pos_guard)
-        if dir == "^":
-            try_guard_pos = (pos_guard[0] - 1, pos_guard[1])
-        elif dir == "v":
-            try_guard_pos = (pos_guard[0] + 1, pos_guard[1])
-        elif dir == "<":
-            try_guard_pos = (pos_guard[0], pos_guard[1] - 1)
+        if guard_pos != original:
+            s.add(guard_pos)
+        if direction == "^":
+            try_guard_pos = (guard_pos[0] - 1, guard_pos[1])
+        elif direction == "v":
+            try_guard_pos = (guard_pos[0] + 1, guard_pos[1])
+        elif direction == "<":
+            try_guard_pos = (guard_pos[0], guard_pos[1] - 1)
         else:
-            try_guard_pos = (pos_guard[0], pos_guard[1] + 1)
+            try_guard_pos = (guard_pos[0], guard_pos[1] + 1)
 
-        if check(try_guard_pos, pos_items):
-            dir = turn(dir)
+        if check(try_guard_pos, items):
+            direction = turn(direction)
         else:
-            pos_guard = try_guard_pos
-        if check_edges(try_guard_pos, array):
-            # s.add(try_guard_pos)
+            guard_pos = try_guard_pos
+        if check_edges(try_guard_pos, grid):
+            s.add(try_guard_pos)
             break
-    return s, array
+    return s
 
 
-def test_location(location, pos_guard):
+def test_location(grid, pos_items, pos_guard):
     s = dict()
-    array = arrayer(location)
-    org_pos = pos_guard
-    pos_items = find_items(array)
-    dir = array[pos_guard[0]][pos_guard[1]]
-
+    direction = grid[pos_guard[0]][pos_guard[1]]
     while True:
-
         if pos_guard not in s:
-            s[pos_guard] = 1
+            s[pos_guard] = [direction]
+        elif direction in s[pos_guard]:
+            return True
         else:
-            s[pos_guard] += 1
+            s[pos_guard].append(direction)
 
-            if s[pos_guard] > 4:
-                return True
-
-        if dir == "^":
+        if direction == "^":
             try_guard_pos = (pos_guard[0] - 1, pos_guard[1])
-        elif dir == "v":
+        elif direction == "v":
             try_guard_pos = (pos_guard[0] + 1, pos_guard[1])
-        elif dir == "<":
+        elif direction == "<":
             try_guard_pos = (pos_guard[0], pos_guard[1] - 1)
         else:
             try_guard_pos = (pos_guard[0], pos_guard[1] + 1)
 
         if check(try_guard_pos, pos_items):
-            dir = turn(dir)
-
+            direction = turn(direction)
         else:
             pos_guard = try_guard_pos
-        if check_edges(try_guard_pos, array):
-            # s.add(try_guard_pos)
+        if check_edges(try_guard_pos, grid):
+
             return False
 
 
 def main():
-    count = 0
-    seta, array = set_builder()
-    pos_guard = find_guard(array)
-    for location in seta:
-        temporary = location
-        if test_location(location, pos_guard):
-            print(location)
-            count += 1
-    print(count)
+    grid = arrayer("inputfile.txt", "")
+    pos_guard, items = find_guard_items(grid)
+    pt2 = 0
+    seta = pt1_build(grid, pos_guard, items)
+    pt1 = len(seta)
+    print(pt1)
 
+    for location in seta:
+        orig_items = items[:]
+        orig_items.append(location)
+        if test_location(grid, orig_items, pos_guard):
+            pt2 += 1
+
+    print(pt2)
 
 main()

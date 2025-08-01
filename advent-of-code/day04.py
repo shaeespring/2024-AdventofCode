@@ -1,52 +1,11 @@
+import arrayer
 X = "X"
 M = "M"
 A = "A"
 S = "S"
 
-
-def arrayer():
-    lines = []
-    with open("inputfile.txt") as file:
-
-        for line in file:
-            line = line.strip()
-            lines.append(line)
-
-        array = []
-
-        for line in lines:
-            # iterate over the characters in the line
-            inner = []
-            for char in line:
-                inner.append(char)
-            array.append(inner)
-
-        return array
-
-
 def count_horz(anarray):
-    # count = 0
-    # with open("day4.txt") as file:
-    #     for line in file:
-    #         line = line.strip()
-    #         for i in range(len(line) - 2):
-
-    #             if (
-    #                 line[i] == X
-    #                 and line[i + 1] == M
-    #                 and line[i + 2] == A
-    #                 and line[i + 3] == S
-    #             ):
-    #                 count += 1
-    #             if (
-    #                 line[i] == X
-    #                 and line[i - 1] == M
-    #                 and line[i - 2] == A
-    #                 and line[i - 3] == S
-    #             ):
-    #                 count += 1
-
-    # return count
+    
     count = 0
     # print(anarray[0][0])
     # print(anarray[0][1]) # one to the right
@@ -207,12 +166,13 @@ def count_diag(anarray):
 
 
 def main():
-    arrayxmas = arrayer()
+    arrayxmas = arrayer.arrayer("inputfile.txt")
 
-    # count_h = count_horz(arrayxmas)
-    # count_v = count_vert(arrayxmas)
-    # count_d = count_diag(arrayxmas)
-    # count = count_h + count_v + count_d
+    count_h = count_horz(arrayxmas)
+    count_v = count_vert(arrayxmas)
+    count_d = count_diag(arrayxmas)
+    count = count_h + count_v + count_d
+    print(count)
     count = part2(arrayxmas)
     print(count)
 
